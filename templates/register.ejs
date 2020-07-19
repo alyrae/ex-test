@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>  
+</head>
+<body>
+  <h1><%- title %></h1>
+  <input type="text" placeholder="昵称" name="name">
+  <br>
+  <input type="password" placeholder="密码" name="password">
+  <br>
+  <label for="">头像<input type="file" accept="image/*" name="file"></label>
+  <br>
+  <button>注册</button>
+  <script>
+
+    document.getElementsByTagName('button')[0].addEventListener('click', e => {
+      let data = new FormData()
+      data.append('file', document.querySelector('input[type=file]').files[0])
+      data.append('name', document.querySelector('input[type=text]').value)
+      data.append('password', document.querySelector('input[type=password]').value)
+
+      let xhr = new XMLHttpRequest()
+      xhr.open('post', '/register', true)
+      // 不需要设置content-type: multipart/form-data
+      // xhr.setRequestHeader会强制覆盖
+      // 设置后缺少boundary=----xxxx导致multer中间件解析失败
+      xhr.send(data)
+      xhr.onreadystatechange = function () {
+        if (xhr.status === 200 && xhr.readyState === 4) {
+          let res = JSON.parse(xhr.responseText)
+          if (res.errcode === 0) {
+            location.replace('http://localhost:3000/home')
+          } else {
+            alert(res.detail)
+          }
+        }
+      }
+    })    
+  </script>  
+</body>
+</html>

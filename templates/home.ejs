@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1><%- title %></h1>
+  <ul>
+    <% for (let i = 0; i < list.length; i++) { %>
+      <li data-id="<%= list[i].id %>">
+        <p><%= list[i].title %></p>
+        <p><%= list[i].content %></p>
+      </li>
+    <% } %>
+    <li></li>
+  </ul>
+  <button onclick="toEdit()">发布文章</button>
+  <script>
+    let list = document.getElementsByTagName('li')
+    for(i=0;i<list.length;i++) {
+      list[i].addEventListener('click', e => {
+        console.log(e.currentTarget.dataset.id)
+      })
+    }
+    function toEdit() {
+      location.href = 'http://localhost:3000/edit'
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1><%= title %></h1>
+  <input type="text" class="name">
+  <input type="password" class="password">
+  <button>login</button>
+  <p style="text-decoration: underline;" onclick="toRegister()">去注册</p>
+  <script>
+    function toRegister() {
+      location.replace('http://localhost:3000/register')
+    }
+
+    document.getElementsByTagName('button')[0].addEventListener('click', e => {
+      let name = document.getElementsByClassName('name')[0].value
+      let password = document.getElementsByClassName('password')[0].value
+      let ajax = new XMLHttpRequest()
+      ajax.open('post', '/login', true)
+      ajax.setRequestHeader('content-type', 'application/json')
+      ajax.send(JSON.stringify({name, password}))
+      ajax.onreadystatechange = function() {
+        if (ajax.readyState === 4 && ajax.status === 200) {
+          let res = JSON.parse(ajax.responseText)
+          if (res.errcode === 0) {
+            location.replace('/')
+          } else {
+            alert(res.detail)
+          }
+        } 
+      }
+    })
+  </script>
+</body>
+</html>
