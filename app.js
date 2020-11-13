@@ -3,33 +3,44 @@ const chalk = require('chalk')
 const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
+// const MongoStore = require('connect-mongo')(session)
 const winston = require('winston')
 const expressWinston = require('express-winston')
+const mysql = require('mysql')
 
 const route = require('./route')
 const config = require('./config')
-require('./mongodb')
+// require('./mongodb')
 
 const app = express()
 
 app.set('views', path.join(__dirname, 'templates'))
 app.set('view engine', 'ejs')
 
-app.use(session({
-  secret: 'alyrae',
-  resave: false,
-  saveUninitialized: true,
-  name: 'sid',
-  rolling: true,
-  cookie: {
-    maxAge: 1000 * 60 * 5,
-    secure: false    
-  },
-  store: new MongoStore({
-    url: 'mongodb://localhost:27017/test'
-  })
-}))
+const connect = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'wwwmysql123',
+  database: 'test',
+})
+  
+connect.connect()
+
+
+// app.use(session({
+//   secret: 'alyrae',
+//   resave: false,
+//   saveUninitialized: true,
+//   name: 'sid',
+//   rolling: true,
+//   cookie: {
+//     maxAge: 1000 * 60 * 5,
+//     secure: false    
+//   },
+//   store: new MongoStore({
+//     url: 'mongodb://localhost:27017/test'
+//   })
+// }))
 
 app.use(expressWinston.logger({
   transports: [

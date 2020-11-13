@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const chalk = require('chalk')
 require('./models/user')
 
-mongoose.connect('mongodb://localhost/test')
+mongoose.connect('mongodb://localhost/test', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 
 let db = mongoose.connection
 
